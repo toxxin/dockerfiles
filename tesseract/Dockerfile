@@ -1,4 +1,4 @@
-
+#
 # Dockerfile for tesseract
 #
 
@@ -18,12 +18,17 @@ RUN wget http://leptonica.com/source/leptonica-1.72.tar.gz \
 
 # Tesseract
 RUN git clone https://github.com/tesseract-ocr/tesseract.git \
-		&& cd tesseract \
-		&& ./autogen.sh \
-		&& ./configure \
-		&& make \
-		&& make install \
-		&& cd ..
+			&& cd tesseract \
+			&& ./autogen.sh \
+			&& ./configure \
+			&& make \
+			&& make install \
+			&& cd .. \
+		&& git clone https://github.com/tesseract-ocr/tessdata.git \
+			&& cd tessdata \
+			&& mv * /usr/local/share/tessdata/ \
+			&& cd .. \
+		&& rm -rf tesseract tessdata /var/cache/apk/*
 
 ENV PATH /usr/local/bin:$PATH
 ENV LD_LIBRARY_PATH /usr/local/lib
